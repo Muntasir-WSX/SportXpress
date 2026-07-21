@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Public_Sans, Merriweather } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const merriweatherHeading = Merriweather({subsets:['latin'],variable:'--font-heading'});
+
+const publicSans = Public_Sans({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "SportXpress",
@@ -15,9 +20,23 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={` h-full antialiased`}
+      className={cn("h-full", "antialiased", "font-sans", publicSans.variable, merriweatherHeading.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        
+        
+        {children}
+
+
+
+
+      </body>
+    
+    {/* Nav */}
+
+    {/* footer */}
+
+    
     </html>
   );
 }
