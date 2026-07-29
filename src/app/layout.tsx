@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Public_Sans, Merriweather } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "sonner";
+
+
 
 const merriweatherHeading = Merriweather({subsets:['latin'],variable:'--font-heading'});
 
@@ -24,7 +27,17 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         
-        
+   <Toaster 
+  position="bottom-right" 
+  toastOptions={{
+    style: {
+      background: 'var(--card)',
+      color: 'var(--foreground)',
+      border: '1px solid var(--border)',
+    },
+    className: 'shadow-lg rounded-xl',
+  }}
+/>
         {children}
 
 

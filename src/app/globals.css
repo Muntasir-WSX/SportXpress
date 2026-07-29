@@ -25,44 +25,53 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0.008 326);
+  /* লাইট মোড: ক্লিন এবং এনার্জেটিক স্পোর্টস ফিল (স্পোর্টিং ব্লু ও এনার্জেটিক অরেঞ্জ) */
+  --background: oklch(0.985 0.002 247);
+  --foreground: oklch(0.13 0.028 261);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0.008 326);
+  --card-foreground: oklch(0.13 0.028 261);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0.008 326);
-  --primary: oklch(0.514 0.222 16.935);
-  --primary-foreground: oklch(0.969 0.015 12.422);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.96 0.003 325.6);
-  --muted-foreground: oklch(0.542 0.034 322.5);
-  --accent: oklch(0.96 0.003 325.6);
-  --accent-foreground: oklch(0.212 0.019 322.12);
+  --popover-foreground: oklch(0.13 0.028 261);
+  
+  /* প্রাইমারি: স্পোর্টিং অরেঞ্জ/রেড শেড (অ্যাকশন ও হাইলাইটের জন্য) */
+  --primary: oklch(0.623 0.214 41.6);
+  --primary-foreground: oklch(0.985 0 0);
+  
+  --secondary: oklch(0.945 0.012 254);
+  --secondary-foreground: oklch(0.21 0.034 264);
+  --muted: oklch(0.95 0.008 257);
+  --muted-foreground: oklch(0.55 0.022 258);
+  --accent: oklch(0.945 0.012 254);
+  --accent-foreground: oklch(0.21 0.034 264);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0.005 325.62);
-  --input: oklch(0.922 0.005 325.62);
-  --ring: oklch(0.711 0.019 323.02);
-  --radius: 0.625rem;
+  --border: oklch(0.88 0.012 255);
+  --input: oklch(0.88 0.012 255);
+  --ring: oklch(0.623 0.214 41.6);
+  --radius: 0.5rem;
 }
 
 .dark {
-  --background: oklch(0.145 0.008 326);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.212 0.019 322.12);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.212 0.019 322.12);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.455 0.188 13.697);
-  --primary-foreground: oklch(0.969 0.015 12.422);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.263 0.024 320.12);
-  --muted-foreground: oklch(0.711 0.019 323.02);
-  --accent: oklch(0.263 0.024 320.12);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  /* ডার্ক মোড: স্টাইলিশ স্পোর্টস ব্রডকাস্ট রুম ভাইব (রিচ ডার্ক নেভি ও পপ আপ অরেঞ্জ) */
+  --background: oklch(0.12 0.03 260);
+  --foreground: oklch(0.985 0.002 247);
+  
+  --card: oklch(0.16 0.035 258);
+  --card-foreground: oklch(0.985 0.002 247);
+  --popover: oklch(0.16 0.035 258);
+  --popover-foreground: oklch(0.985 0.002 247);
+  
+  /* ব্রাইট স্পোর্টস অরেঞ্জ যা ডার্ক ব্যাকগ্রাউন্ডে চমৎকার ফুটে উঠবে */
+  --primary: oklch(0.65 0.22 40.5);
+  --primary-foreground: oklch(0.985 0 0);
+  
+  --secondary: oklch(0.22 0.04 258);
+  --secondary-foreground: oklch(0.985 0.002 247);
+  --muted: oklch(0.22 0.04 258);
+  --muted-foreground: oklch(0.7 0.02 258);
+  --accent: oklch(0.24 0.045 258);
+  --accent-foreground: oklch(0.985 0.002 247);
+  --destructive: oklch(0.65 0.22 25);
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.542 0.034 322.5);
+  --ring: oklch(0.65 0.22 40.5);
 }
