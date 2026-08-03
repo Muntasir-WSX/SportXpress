@@ -2,75 +2,68 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --radius-xl: var(--radius);
-}
 
-:root {
- 
-  --background: oklch(0.985 0.002 247);
-  --foreground: oklch(0.13 0.028 261);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.13 0.028 261);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.13 0.028 261);
-  
-  --primary: oklch(0.623 0.214 41.6);
-  --primary-foreground: oklch(0.985 0 0);
-  
-  --secondary: oklch(0.945 0.012 254);
-  --secondary-foreground: oklch(0.21 0.034 264);
-  --muted: oklch(0.95 0.008 257);
-  --muted-foreground: oklch(0.55 0.022 258);
-  --accent: oklch(0.945 0.012 254);
-  --accent-foreground: oklch(0.21 0.034 264);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.012 255);
-  --input: oklch(0.88 0.012 255);
-  --ring: oklch(0.623 0.214 41.6);
-  --radius: 0.5rem;
-}
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222.2 84% 4.9%;
 
-.dark {
- 
-  --background: oklch(0.12 0.03 260);
-  --foreground: oklch(0.985 0.002 247);
-  
-  --card: oklch(0.16 0.035 258);
-  --card-foreground: oklch(0.985 0.002 247);
-  --popover: oklch(0.16 0.035 258);
-  --popover-foreground: oklch(0.985 0.002 247);
-  
- 
-  --primary: oklch(0.65 0.22 40.5);
-  --primary-foreground: oklch(0.985 0 0);
-  
-  --secondary: oklch(0.22 0.04 258);
-  --secondary-foreground: oklch(0.985 0.002 247);
-  --muted: oklch(0.22 0.04 258);
-  --muted-foreground: oklch(0.7 0.02 258);
-  --accent: oklch(0.24 0.045 258);
-  --accent-foreground: oklch(0.985 0.002 247);
-  --destructive: oklch(0.65 0.22 25);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.65 0.22 40.5);
-}
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* RentNest Primary Deep Blue */
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+
+    /* RentNest Secondary Mint Green */
+    --secondary: 160 84% 39%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 160 60% 90%;
+    --accent-foreground: 160 84% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 6.5%;
+    --card-foreground: z210 40% 98%;
+
+    --popover: 222.2 84% 6.5%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 160 70% 42%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 221 83% 53%;
+  }
+

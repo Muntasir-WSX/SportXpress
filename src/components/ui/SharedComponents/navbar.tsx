@@ -15,9 +15,8 @@ export function Navbar() {
  
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/breaking-news', label: 'Breaking News' },
     { href: '/about', label: 'About Us' },
-    { href: '/post-news', label: 'Post Your Story' },
+    { href: '/properties', label: 'Properties' },
   ]
 
   return (
@@ -31,17 +30,17 @@ export function Navbar() {
             <Link href="/" className="flex-shrink-0 flex items-center gap-2">
               <Image
                 src="/assets/logo.png"
-                alt="SportXpress Logo"
+                alt="RentNest Logo"
                 width={40}
                 height={40}
                 className="h-10 w-auto"
               />
               <div className="flex flex-col">
                 <span className="text-xl font-bold tracking-tight text-foreground leading-none">
-                  Sport<span className="text-primary">Xpress</span>
+                  Rent<span className="text-primary">Nest</span>
                 </span>
                 <span className="hidden lg:block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mt-1">
-                  The Pulse of Global Sports
+                  Fastest Growing Property Rental Platform
                 </span>
               </div>
             </Link>

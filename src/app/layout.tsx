@@ -10,8 +10,8 @@ const merriweatherHeading = Merriweather({subsets:['latin'],variable:'--font-hea
 const publicSans = Public_Sans({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
-  title: "SportXpress",
-  description: "fastest growing sports news platform",
+  title: "RentMy Property ",
+  description: "fastest growing property rental platform",
   icons: {
     icon: "/favicon.ico", 
   },
