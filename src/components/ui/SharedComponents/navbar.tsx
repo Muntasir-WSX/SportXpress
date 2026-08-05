@@ -2,17 +2,17 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { Menu, X, User } from 'lucide-react'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
 
- 
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About Us' },
@@ -27,14 +27,7 @@ export function Navbar() {
           {/* Left Side: Logo & Desktop Navigation Links */}
           <div className="flex items-center gap-8">
             {/* Logo & Brand */}
-            <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-              <Image
-                src="/assets/logo.png"
-                alt="RentNest Logo"
-                width={40}
-                height={40}
-                className="h-10 w-auto"
-              />
+            <Link href="/" className="shrink-0 flex items-center gap-2">
               <div className="flex flex-col">
                 <span className="text-xl font-bold tracking-tight text-foreground leading-none">
                   Rent<span className="text-primary">Nest</span>
@@ -47,24 +40,37 @@ export function Navbar() {
 
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center gap-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-foreground hover:text-primary transition-colors duration-200 font-medium text-sm"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`relative py-5 text-sm font-medium transition-colors duration-200 ${
+                      isActive 
+                        ? 'text-primary font-semibold' 
+                        : 'text-foreground hover:text-primary'
+                    }`}
+                  >
+                    {link.label}
+                    {/* Active Underline Indicator */}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary rounded-full animate-in fade-in" />
+                    )}
+                  </Link>
+                )
+              })}
             </div>
           </div>
 
           {/* Right Side: Profile Icon & Mobile Menu Button */}
           <div className="flex items-center gap-3">
-            {/* Profile Icon (Always visible on right side) */}
+            {/* Profile Icon */}
             <Link
               href="/profile"
-              className="p-2 rounded-full bg-secondary text-foreground hover:text-primary hover:bg-secondary/80 transition-colors"
+              className={`p-2 rounded-full transition-colors text-foreground hover:text-primary hover:bg-muted ${
+                pathname === '/profile' ? 'text-primary font-bold' : ''
+              }`}
               aria-label="Profile"
             >
               <User size={20} />
@@ -73,7 +79,7 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMenu}
-              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-foreground hover:bg-secondary transition-colors"
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-foreground hover:bg-muted transition-colors"
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -84,18 +90,24 @@ export function Navbar() {
 
         {/* Mobile Navigation Dropdown */}
         {isOpen && (
-          <div className="md:hidden pb-4 space-y-2 animate-in fade-in slide-in-from-top-2 border-t border-border pt-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block px-3 py-2 rounded-md text-foreground hover:bg-secondary transition-colors font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            
+          <div className="md:hidden pb-4 space-y-1 border-t border-border pt-3">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`block px-3 py-2 rounded-md transition-colors font-medium ${
+                    isActive
+                      ? 'bg-primary/10 text-primary font-semibold border-l-4 border-primary'
+                      : 'text-foreground hover:bg-muted'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
           </div>
         )}
       </div>
