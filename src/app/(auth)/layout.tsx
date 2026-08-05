@@ -1,6 +1,8 @@
+import { Navbar } from '@/components/ui/SharedComponents/navbar';
+import { getMe } from '@/service/getMe';
 import React from 'react'
 
-const AuthLayout = (
+const AuthLayout = async (
     {
         children
 
@@ -10,9 +12,10 @@ const AuthLayout = (
         children: React.ReactNode
     }
 ) => {
+   
   return (
    <>
-   <div>
+   <div >
      {children}
     </div>
    </>

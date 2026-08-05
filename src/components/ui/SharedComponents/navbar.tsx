@@ -1,23 +1,70 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X, User } from 'lucide-react'
+import { Menu, X, User, Settings, LogOut, ChevronDown, LogIn } from 'lucide-react'
 
-export function Navbar() {
+
+type UserProfile = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: string;
+  isBanned: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+type Iuser = {
+  success: boolean;
+  message: string;
+  data?: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    isBanned: boolean;
+    createdAt: string;
+    updatedAt: string;
+  };
+};
+
+type NavbarProps = {
+  user?: Iuser;
+}
+
+export function Navbar({ user }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
   const pathname = usePathname()
+  const profileRef = useRef<HTMLDivElement>(null)
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
 
+  // Close profile dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setIsProfileOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   const navLinks = [
     { href: '/', label: 'Home' },
+    { href: '/properties', label: 'Featured Properties' },
     { href: '/about', label: 'About Us' },
-    { href: '/properties', label: 'Properties' },
   ]
+
+  const profileData = user?.data;
 
   return (
     <nav className="sticky top-0 z-50 bg-card border-b border-border">
@@ -27,15 +74,18 @@ export function Navbar() {
           {/* Left Side: Logo & Desktop Navigation Links */}
           <div className="flex items-center gap-8">
             {/* Logo & Brand */}
-            <Link href="/" className="shrink-0 flex items-center gap-2">
-              <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight text-foreground leading-none">
-                  Rent<span className="text-primary">Nest</span>
-                </span>
-                <span className="hidden lg:block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mt-1">
-                  Fastest Growing Property Rental Platform
-                </span>
-              </div>
+            <Link href="/" className="shrink-0 flex flex-col items-start gap-0.5 py-2">
+              <Image 
+                src="/assets/logo.png" 
+                alt="RentNest Logo" 
+                width={120} 
+                height={40} 
+                className="object-contain h-10 w-auto"
+                priority
+              />
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mt-0.5">
+                Find your nest
+              </span>
             </Link>
 
             {/* Desktop Navigation Links */}
@@ -53,7 +103,6 @@ export function Navbar() {
                     }`}
                   >
                     {link.label}
-                    {/* Active Underline Indicator */}
                     {isActive && (
                       <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary rounded-full animate-in fade-in" />
                     )}
@@ -63,18 +112,78 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Right Side: Profile Icon & Mobile Menu Button */}
+          {/* Right Side: Profile Icon Dropdown / Login & Mobile Menu Button */}
           <div className="flex items-center gap-3">
-            {/* Profile Icon */}
-            <Link
-              href="/profile"
-              className={`p-2 rounded-full transition-colors text-foreground hover:text-primary hover:bg-muted ${
-                pathname === '/profile' ? 'text-primary font-bold' : ''
-              }`}
-              aria-label="Profile"
-            >
-              <User size={20} />
-            </Link>
+            
+            {profileData ? (
+              <div className="relative" ref={profileRef}>
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className={`flex items-center gap-1.5 p-1.5 rounded-full transition-colors text-foreground hover:text-primary hover:bg-muted ${
+                    pathname === '/profile' ? 'text-primary font-bold' : ''
+                  }`}
+                  aria-label="Profile menu"
+                >
+                  <div className="p-2 rounded-full bg-white dark:bg-card border border-border shadow-sm text-foreground flex items-center justify-center">
+                    <User size={18} />
+                  </div>
+                  <ChevronDown size={14} className={`transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Dropdown Menu */}
+                {isProfileOpen && (
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-card border border-border shadow-lg py-2 z-50 animate-in fade-in-50 zoom-in-95">
+                    <div className="px-4 py-2 border-b border-border">
+                      <p className="text-xs text-muted-foreground">Signed in as</p>
+                      <p className="text-sm font-semibold text-foreground truncate">{profileData.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{profileData.email}</p>
+                    </div>
+
+                    <div className="py-1">
+                      <Link
+                        href="/profile"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+                      >
+                        <User size={16} className="text-muted-foreground" />
+                        <span>Profile</span>
+                      </Link>
+                      <Link
+                        href="/settings"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+                      >
+                        <Settings size={16} className="text-muted-foreground" />
+                        <span>Settings</span>
+                      </Link>
+                    </div>
+
+                    <div className="border-t border-border pt-1">
+                      <button
+                        onClick={() => {
+                          setIsProfileOpen(false)
+                        
+                          alert('Logged out successfully!')
+                        }}
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                      >
+                        <LogOut size={16} />
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              
+              <Link
+                href="/login"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors shadow-sm"
+              >
+                <LogIn size={16} />
+                <span>Login</span>
+              </Link>
+            )}
 
             {/* Mobile Menu Button */}
             <button

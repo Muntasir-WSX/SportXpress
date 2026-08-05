@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/ui/SharedComponents/navbar";
+import { getMe } from "@/service/getMe";
 
 const merriweatherHeading = Merriweather({subsets:['latin'],variable:'--font-heading'});
 
@@ -17,11 +18,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+const user = await getMe();
+
+
   return (
     <html
       lang="en"
@@ -29,7 +34,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {/* Navbar ekhon thik bhabe body er bhitore children er upore thakbe */}
-        <Navbar />
+        <Navbar user={user} />
 
         <Toaster 
           position="bottom-right" 

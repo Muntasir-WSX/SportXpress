@@ -52,7 +52,7 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
                 sameSite: "lax",
             });
         }
-        // redirect("/user-dashboard", "replace");
+        redirect("/", "replace");
     }
 
     return result;
