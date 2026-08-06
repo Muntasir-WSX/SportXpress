@@ -20,6 +20,14 @@ export const getMe = async () => {
         headers: {
            Cookie: `accessToken=${accessToken}`,
         },
+
+
+        cache: "force-cache",
+        next : {
+            revalidate: 60 * 60 * 24, // Revalidate every 24 hours
+            tags: ["My profile"],
+        }
+
     });
 
 

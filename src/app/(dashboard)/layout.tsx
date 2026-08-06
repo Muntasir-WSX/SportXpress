@@ -17,7 +17,6 @@ const DashboardLayout = async (
    <>
 
    <div>
-    <Navbar user={user} />
 
 {children}
    </div>

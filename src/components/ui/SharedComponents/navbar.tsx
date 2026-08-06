@@ -1,11 +1,13 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useTransition } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
-import { Menu, X, User, Settings, LogOut, ChevronDown, LogIn } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { Menu, X, User, Settings, LogOut, ChevronDown, LogIn, Loader2 } from 'lucide-react'
 
+import { toast } from 'sonner' 
+import { logout } from '@/service/logout';
 
 type UserProfile = {
   id: string;
@@ -21,16 +23,7 @@ type UserProfile = {
 type Iuser = {
   success: boolean;
   message: string;
-  data?: {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    role: string;
-    isBanned: boolean;
-    createdAt: string;
-    updatedAt: string;
-  };
+  data?: UserProfile;
 };
 
 type NavbarProps = {
@@ -40,7 +33,10 @@ type NavbarProps = {
 export function Navbar({ user }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isProfileOpen, setIsProfileOpen] = useState(false)
+  const [isPending, startTransition] = useTransition()
+  
   const pathname = usePathname()
+  const router = useRouter()
   const profileRef = useRef<HTMLDivElement>(null)
 
   const toggleMenu = () => {
@@ -58,6 +54,29 @@ export function Navbar({ user }: NavbarProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  // হ্যান্ডেল লগআউট
+  const handleLogout = () => {
+    setIsProfileOpen(false)
+    setIsOpen(false)
+
+    startTransition(async () => {
+      try {
+        const res = await logout()
+        if (res?.success) {
+          toast.success(res.message, {
+            position: 'bottom-right',
+          })
+          router.refresh()
+          router.push('/')
+        }
+      } catch (error) {
+        toast.error("Something went wrong during logout!", {
+          position: 'bottom-right',
+        })
+      }
+    })
+  }
+
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/properties', label: 'Featured Properties' },
@@ -73,7 +92,6 @@ export function Navbar({ user }: NavbarProps) {
           
           {/* Left Side: Logo & Desktop Navigation Links */}
           <div className="flex items-center gap-8">
-            {/* Logo & Brand */}
             <Link href="/" className="shrink-0 flex flex-col items-start gap-0.5 py-2">
               <Image 
                 src="/assets/logo.png" 
@@ -88,7 +106,6 @@ export function Navbar({ user }: NavbarProps) {
               </span>
             </Link>
 
-            {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href
@@ -130,7 +147,7 @@ export function Navbar({ user }: NavbarProps) {
                   <ChevronDown size={14} className={`transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
                 </button>
 
-                {/* Dropdown Menu */}
+                {/* Dropdown Menu with Name & Email */}
                 {isProfileOpen && (
                   <div className="absolute right-0 mt-2 w-56 rounded-xl bg-card border border-border shadow-lg py-2 z-50 animate-in fade-in-50 zoom-in-95">
                     <div className="px-4 py-2 border-b border-border">
@@ -160,22 +177,18 @@ export function Navbar({ user }: NavbarProps) {
 
                     <div className="border-t border-border pt-1">
                       <button
-                        onClick={() => {
-                          setIsProfileOpen(false)
-                        
-                          alert('Logged out successfully!')
-                        }}
-                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                        onClick={handleLogout}
+                        disabled={isPending}
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/35 transition-colors disabled:opacity-50"
                       >
-                        <LogOut size={16} />
-                        <span>Logout</span>
+                        {isPending ? <Loader2 size={16} className="animate-spin" /> : <LogOut size={16} />}
+                        <span>{isPending ? 'Logging out...' : 'Logout'}</span>
                       </button>
                     </div>
                   </div>
                 )}
               </div>
             ) : (
-              
               <Link
                 href="/login"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors shadow-sm"

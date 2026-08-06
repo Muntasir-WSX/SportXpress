@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import jwt, { JwtPayload } from "jsonwebtoken"; 
 
 type LoginState = {
     success: boolean;
@@ -51,8 +52,17 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
                 maxAge: 60 * 60 * 24 * 7,
                 sameSite: "lax",
             });
+        } 
+
+        const decodedToken: any = jwt.decode(result.data.accessToken) as JwtPayload;
+
+        if (decodedToken?.role === "TENANT") {
+            redirect("/", "replace");
+        } else if (decodedToken?.role === "LANDLORD") {
+            redirect("/Landlord-Dashboard", "replace"); 
+        } else if (decodedToken?.role === "ADMIN") {
+            redirect("/admin-dashboard", "replace");
         }
-        redirect("/", "replace");
     }
 
     return result;
