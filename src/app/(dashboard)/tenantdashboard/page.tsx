@@ -1,9 +1,18 @@
-import React from 'react'
+import { getMe } from "@/service/getMe";
+import { redirect } from "next/navigation";
+import React from 'react';
 
-const TenantDashboardPage = () => {
-  return (
-    <div>Tenant Dashboard Page</div>
-  )
-}
+const TenantDashboardPage = async () => {
+    const user = await getMe();
 
-export default TenantDashboardPage
+   
+    if (!user?.success || user.data?.role !== "TENANT") {
+        redirect("/not-found");
+    }
+
+    return (
+        <div>Tenant Dashboard Page</div>
+    );
+};
+
+export default TenantDashboardPage;

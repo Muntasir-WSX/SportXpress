@@ -1,28 +1,32 @@
-import { Navbar } from '@/components/ui/SharedComponents/navbar';
 import { getMe } from '@/service/getMe';
-import React from 'react'
+import { redirect } from 'next/navigation';
+import React from 'react';
+import { headers } from 'next/headers';
 
-const DashboardLayout = async (
-    {
-        children
-
-    }
-    :
-    {
-        children: React.ReactNode
-    }
-) => {
+export default async function DashboardLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const user = await getMe();
-  return (
-   <>
 
-   <div>
-
-{children}
-   </div>
    
-   </>
-  )
-}
+    if (!user || !user.success || !user.data) {
+        redirect('/login');
+    }
 
-export default DashboardLayout
+    const userRole = user.data.role;
+
+  
+    const headersList = await headers();
+    const referer = headersList.get('referer') || '';
+    const currentUrl = headersList.get('x-invoke-path') || headersList.get('x-url') || '';
+    
+   
+
+    return (
+        <div className="min-h-screen bg-background">
+            {children}
+        </div>
+    );
+}

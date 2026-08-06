@@ -37,33 +37,37 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
     const result = await response.json();
     console.log("Login Response Result:", result);
 
-    if (result.success) {
-        const cookieStore = await cookies();
+    if (!result.success) {
+        return result; 
+    }
 
-        cookieStore.set("accessToken", result.data.accessToken, {
+    const cookieStore = await cookies();
+
+    cookieStore.set("accessToken", result.data.accessToken, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 7,
+        sameSite: "lax",
+    });
+
+    if (result.data.refreshToken) {
+        cookieStore.set("refreshToken", result.data.refreshToken, {
             httpOnly: true,
             maxAge: 60 * 60 * 24 * 7,
             sameSite: "lax",
         });
+    } 
 
-        if (result.data.refreshToken) {
-            cookieStore.set("refreshToken", result.data.refreshToken, {
-                httpOnly: true,
-                maxAge: 60 * 60 * 24 * 7,
-                sameSite: "lax",
-            });
-        } 
+    const decodedToken: any = jwt.decode(result.data.accessToken) as JwtPayload;
+    let redirectTo = "/tenantdashboard"; 
 
-        const decodedToken: any = jwt.decode(result.data.accessToken) as JwtPayload;
-
-        if (decodedToken?.role === "TENANT") {
-            redirect("/", "replace");
-        } else if (decodedToken?.role === "LANDLORD") {
-            redirect("/Landlord-Dashboard", "replace"); 
-        } else if (decodedToken?.role === "ADMIN") {
-            redirect("/admin-dashboard", "replace");
-        }
+    if (decodedToken?.role === "LANDLORD") {
+        redirectTo = "/Landlord-Dashboard";
+    } else if (decodedToken?.role === "ADMIN") {
+        redirectTo = "/admin-dashboard";
+    } else if (decodedToken?.role === "TENANT") {
+        redirectTo = "/tenantdashboard";
     }
 
-    return result;
+   
+    redirect(redirectTo);
 };
