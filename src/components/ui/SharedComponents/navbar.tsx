@@ -54,7 +54,7 @@ export function Navbar({ user }: NavbarProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // হ্যান্ডেল লগআউট
+
   const handleLogout = () => {
     setIsProfileOpen(false)
     setIsOpen(false)

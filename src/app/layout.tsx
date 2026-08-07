@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/ui/SharedComponents/navbar";
 import { getMe } from "@/service/getMe";
+import Footer from "@/components/ui/SharedComponents/Footer";
 
 const merriweatherHeading = Merriweather({subsets:['latin'],variable:'--font-heading'});
 
@@ -52,7 +53,7 @@ const user = await getMe();
           {children}
         </main>
 
-        {/* Footer ekhane add korte paren */}
+       <Footer></Footer>
       </body>
     </html>
   );
