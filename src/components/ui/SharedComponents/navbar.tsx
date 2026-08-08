@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useTransition } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, X, User, Settings, LogOut, ChevronDown, LogIn, Loader2 } from 'lucide-react'
+import { Menu, X, User, LogOut, ChevronDown, LogIn, Loader2, LayoutDashboard } from 'lucide-react'
 
 import { toast } from 'sonner' 
 import { logout } from '@/service/logout';
@@ -14,7 +14,7 @@ type UserProfile = {
   name: string;
   email: string;
   phone: string;
-  role: string;
+  role: string; // "TENANT" | "LANDLORD" | "ADMIN"
   isBanned: boolean;
   createdAt: string;
   updatedAt: string;
@@ -54,7 +54,6 @@ export function Navbar({ user }: NavbarProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-
   const handleLogout = () => {
     setIsProfileOpen(false)
     setIsOpen(false)
@@ -85,6 +84,21 @@ export function Navbar({ user }: NavbarProps) {
 
   const profileData = user?.data;
 
+  // ডাইনামিক ড্যাশবোর্ড রুট নির্ধারণ ফাংশন
+  const getDashboardRoute = (role?: string) => {
+    switch (role?.toUpperCase()) {
+      case 'ADMIN':
+        return '/admin-dashboard';
+      case 'LANDLORD':
+        return '/Landlord-Dashboard';
+      case 'TENANT':
+      default:
+        return '/tenantdashboard';
+    }
+  }
+
+  const dashboardLink = getDashboardRoute(profileData?.role);
+
   return (
     <nav className="sticky top-0 z-50 bg-card border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,6 +112,7 @@ export function Navbar({ user }: NavbarProps) {
                 alt="RentNest Logo" 
                 width={120} 
                 height={40} 
+                style={{ width: 'auto', height: 'auto' }}
                 className="object-contain h-10 w-auto"
                 priority
               />
@@ -137,7 +152,7 @@ export function Navbar({ user }: NavbarProps) {
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                   className={`flex items-center gap-1.5 p-1.5 rounded-full transition-colors text-foreground hover:text-primary hover:bg-muted ${
-                    pathname === '/profile' ? 'text-primary font-bold' : ''
+                    pathname.includes('dashboard') ? 'text-primary font-bold' : ''
                   }`}
                   aria-label="Profile menu"
                 >
@@ -154,24 +169,19 @@ export function Navbar({ user }: NavbarProps) {
                       <p className="text-xs text-muted-foreground">Signed in as</p>
                       <p className="text-sm font-semibold text-foreground truncate">{profileData.name}</p>
                       <p className="text-xs text-muted-foreground truncate">{profileData.email}</p>
+                      <span className="inline-block mt-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary rounded-md">
+                        {profileData.role}
+                      </span>
                     </div>
 
                     <div className="py-1">
                       <Link
-                        href="/profile"
+                        href={dashboardLink}
                         onClick={() => setIsProfileOpen(false)}
                         className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors"
                       >
-                        <User size={16} className="text-muted-foreground" />
-                        <span>Profile</span>
-                      </Link>
-                      <Link
-                        href="/settings"
-                        onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors"
-                      >
-                        <Settings size={16} className="text-muted-foreground" />
-                        <span>Settings</span>
+                        <LayoutDashboard size={16} className="text-muted-foreground" />
+                        <span>Dashboard</span>
                       </Link>
                     </div>
 

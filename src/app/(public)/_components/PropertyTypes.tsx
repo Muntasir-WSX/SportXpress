@@ -26,7 +26,7 @@ const propertyTypes = [
     },
     {
         id: 4,
-        title: "Commercial Space",
+        title: "Commercial Space/Studio",
         count: "30+ Properties",
         icon: Briefcase,
         link: "/properties?type=commercial",

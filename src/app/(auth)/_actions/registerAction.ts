@@ -4,29 +4,35 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt, { JwtPayload } from "jsonwebtoken"; 
 
-type LoginState = {
+type RegisterState = {
     success: boolean;
     message: string;
     statuscode?: number;
-    data: {
+    data?: {
         user: any;
         accessToken: string;
         refreshToken?: string; 
     };
 };
 
-export const loginAction = async (prevState: LoginState, formData: FormData) => {
-    console.log("Form Data Received:", formData);
+export const registerAction = async (prevState: RegisterState, formData: FormData) => {
+    console.log("Registration Form Data Received:", formData);
 
+    const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    const phone = formData.get("phone") as string;
+    const role = formData.get("role") as string; 
 
     const payload = {
+        name,
         email,
         password,
+        phone,
+        role,
     };
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/auth/login`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/auth/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -35,14 +41,13 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
     });
 
     const result = await response.json();
-    console.log("Login Response Result:", result);
+    console.log("Registration Response Result:", result);
 
     if (!result.success) {
         return result; 
     }
 
     const cookieStore = await cookies();
-
     cookieStore.set("accessToken", result.data.accessToken, {
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 7,
@@ -56,7 +61,6 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
             sameSite: "lax",
         });
     } 
-
     const decodedToken: any = jwt.decode(result.data.accessToken) as JwtPayload;
     let redirectTo = "/tenantdashboard"; 
 
@@ -68,7 +72,5 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
         redirectTo = "/tenantdashboard";
     }
 
-   
     redirect(redirectTo);
 };
-
