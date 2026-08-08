@@ -1,4 +1,5 @@
 import FAQ from "./_components/FAQ";
+import FeaturedProperties from "./_components/FeaturedProperties";
 import HomeSlider from "./_components/homeSlider";
 import HowItWorks from "./_components/HowItWorks";
 import PropertyTypes from "./_components/PropertyTypes";
@@ -10,7 +11,7 @@ export default function HomePage() {
     return (
         <main>
           <HomeSlider></HomeSlider>
-          {/* Featured Properties */}
+         <FeaturedProperties></FeaturedProperties>
           <HowItWorks></HowItWorks>
           <PropertyTypes></PropertyTypes>
           <ServiceArea></ServiceArea>

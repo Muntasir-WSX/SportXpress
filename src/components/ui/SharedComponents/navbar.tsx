@@ -83,8 +83,6 @@ export function Navbar({ user }: NavbarProps) {
   ]
 
   const profileData = user?.data;
-
-  // ডাইনামিক ড্যাশবোর্ড রুট নির্ধারণ ফাংশন
   const getDashboardRoute = (role?: string) => {
     switch (role?.toUpperCase()) {
       case 'ADMIN':
