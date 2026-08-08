@@ -2,6 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import { MapPin, Tag, User, Phone, Mail, Star, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { RentalRequestActions } from '../../_components/RentalRequestActions';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -63,7 +64,8 @@ export default async function PropertyDetailsPage({ params }: Props) {
             </div>
           )}
         </div>
-        <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm space-y-4">
+        
+        <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm space-y-6">
           <div className="flex flex-wrap justify-between items-start gap-4">
             <div className="space-y-2">
               <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-md">
@@ -76,11 +78,16 @@ export default async function PropertyDetailsPage({ params }: Props) {
                 <span>{property.location}</span>
               </p>
             </div>
-            <div className="text-right">
-              <span className="text-xs text-muted-foreground block">Price</span>
-              <span className="text-2xl font-extrabold text-primary">${property.price} <span className="text-sm font-normal text-muted-foreground">/month</span></span>
+            <div className="text-right flex flex-col items-end gap-3">
+              <div>
+                <span className="text-xs text-muted-foreground block">Price</span>
+                <span className="text-2xl font-extrabold text-primary">${property.price} <span className="text-sm font-normal text-muted-foreground">/month</span></span>
+              </div>
             </div>
           </div>
+
+         
+          <RentalRequestActions propertyId={property.id} />
 
           <hr className="border-border" />
           <div className="space-y-2">
@@ -88,7 +95,6 @@ export default async function PropertyDetailsPage({ params }: Props) {
             <p className="text-muted-foreground leading-relaxed">{property.description}</p>
           </div>
 
-         
           {property.amenities && property.amenities.length > 0 && (
             <div className="space-y-3 pt-2">
               <h3 className="text-lg font-semibold">Amenities</h3>
@@ -103,6 +109,7 @@ export default async function PropertyDetailsPage({ params }: Props) {
             </div>
           )}
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {property.landlord && (
             <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-4">
@@ -152,3 +159,5 @@ export default async function PropertyDetailsPage({ params }: Props) {
     </div>
   );
 }
+
+
